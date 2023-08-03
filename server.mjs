@@ -6,9 +6,7 @@ const app = express()
 import expressLayouts from "express-ejs-layouts"
 
 import indexRouter from "./routes/index.mjs"
-import loginRouter from "./routes/login.mjs"
-import usersRouter from "./routes/users.mjs"
-import lobbyRouter from "./routes/lobby.mjs"
+
 //import connection from "./db.mjs"
 //import bcrypt from 'bcrypt'
 
@@ -36,29 +34,13 @@ app.use(expressLayouts)
 app.use(express.static("public"))
 
 //app.use(express.json())
-app.use("/", indexRouter)
-app.use("/", loginRouter)
-app.use("/", usersRouter)
-app.use("/", lobbyRouter)
+app.use("/api", indexRouter)
+
 
 //app.use(express.urlencoded({extended : false})) // a mettre dans le login.mjs!!! permet d'utiliser les datas entrées dans le form dans les requetes inside of our request variables inside our post method
 
 app.listen(process.env.PORT || 3000)
 export default pool
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 // npm init -y
 // npm i express ejs express-ejs-layouts  ==> json/main : server.mjs
@@ -85,4 +67,3 @@ export default pool
 //console.log(__dirname);
 
 // connect MariaDb to express : https://mariadb.com/resources/blog/getting-started-with-connector-node-js/
-

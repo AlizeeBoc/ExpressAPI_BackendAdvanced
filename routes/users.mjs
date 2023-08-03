@@ -1,6 +1,6 @@
 import express from "express"
 const router = express()
-import pool from "../server.mjs"
+import pool from "../db.mjs"
 
 //router.get("/users", async (req, res) => {
 //  try {
@@ -19,7 +19,7 @@ router.get("/users/:userId", async (req, res) => {
   const user = req.params.user
   try {
     const result = await pool.query(
-     //code ici
+     //code ici : A single user. If the user is not an admin, can only get details from people that are in the same lobby.
     )
     res.json(result)
     console.log(result)

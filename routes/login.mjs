@@ -10,6 +10,7 @@ import passport from 'passport'
 import flash from 'express-flash'
 import initialize from '../passport-config.mjs'
 import session from 'express-session'
+//import pool from "../server.mjs"
 
 import initializePassport from "../passport-config.mjs"
 initializePassport(
@@ -35,12 +36,12 @@ router.use(passport.session())
 
 
 //1.
-router.get('/login', (req, res) => {
+router.get('/', (req, res) => {
     res.render('login.ejs')
 })
 
 //4.
-router.post('/login', passport.authenticate('local', {
+router.post('/', passport.authenticate('local', {
     succesRedirect : '/', 
     failureRedirect : '/login',
     failureFlash : true,

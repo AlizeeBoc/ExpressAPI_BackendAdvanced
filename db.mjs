@@ -16,6 +16,7 @@ let pool = mariadb.createPool({
   connectionLimit: 5,
 })
 
+
 const connection = async (query) => {
   let conn
   try {
@@ -32,3 +33,18 @@ const connection = async (query) => {
 connection()
 
 export default connection
+
+
+//import mariadb from "mariadb"
+//let pool = mariadb.createPool({
+//  host: "localhost",
+//  //port : 3000,
+//  user: "alizee",
+//  password: process.env.password_Maria,
+//  database: "lokkeroom",
+//  connectionLimit: 5,
+//})
+
+//export const dbConfig = Object.freeze({
+//  pool: pool,
+//})
