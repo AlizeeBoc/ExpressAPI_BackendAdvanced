@@ -1,9 +1,3 @@
-// TODO FIRST :
-// tutos async await
-// tester une premiere route en récupérant la liste des users
-
-
-
 import dotenv from "dotenv"
 dotenv.config()
 
@@ -14,7 +8,8 @@ import expressLayouts from "express-ejs-layouts"
 import indexRouter from "./routes/index.mjs"
 import loginRouter from "./routes/login.mjs"
 import usersRouter from "./routes/users.mjs"
-
+import lobbyRouter from "./routes/lobby.mjs"
+//import connection from "./db.mjs"
 //import bcrypt from 'bcrypt'
 
 import mariadb from "mariadb"
@@ -27,25 +22,9 @@ let pool = mariadb.createPool({
   connectionLimit: 5,
 })
 
-const connection = async () => {
-  let conn
-  try {
-    conn = await pool.getConnection()
-    //console.log("connection ok")
-    const res = await conn.query('select * from users')
-    console.log(res)
-  } catch (err) {
-    throw err
-  } finally {
-    if (conn) return conn.end()
-  }
-}
-connection()
-
 export const dbConfig = Object.freeze({
   pool: pool,
 })
-
 
 app.set("view engine", "ejs")
 app.set(
@@ -60,12 +39,26 @@ app.use(express.static("public"))
 app.use("/", indexRouter)
 app.use("/", loginRouter)
 app.use("/", usersRouter)
-
-
+app.use("/", lobbyRouter)
 
 //app.use(express.urlencoded({extended : false})) // a mettre dans le login.mjs!!! permet d'utiliser les datas entrées dans le form dans les requetes inside of our request variables inside our post method
 
 app.listen(process.env.PORT || 3000)
+export default pool
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 // npm init -y
 // npm i express ejs express-ejs-layouts  ==> json/main : server.mjs
@@ -78,7 +71,7 @@ app.listen(process.env.PORT || 3000)
 // TUTOS :
 // application setUp : https://www.youtube.com/watch?v=qj2oDkvc4dQ
 // login/register : https://www.youtube.com/watch?v=-RCnNyD0L-s
-// 
+//
 
 // ISSUES AND HOW TO FIX THEM :
 // __dirname in ECMAS : https://stackabuse.com/bytes/fix-dirname-is-not-defined-in-es-module-scope-in-javascript-node/
@@ -92,3 +85,4 @@ app.listen(process.env.PORT || 3000)
 //console.log(__dirname);
 
 // connect MariaDb to express : https://mariadb.com/resources/blog/getting-started-with-connector-node-js/
+

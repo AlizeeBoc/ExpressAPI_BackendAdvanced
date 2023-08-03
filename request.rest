@@ -5,3 +5,7 @@ GET http://localhost:3000/
 POST http://localhost:3000/users
 Content-Type: application/json
 
+###
+
+GET http://localhost:3000/lobby/3/users
+Content-Type: application/json
