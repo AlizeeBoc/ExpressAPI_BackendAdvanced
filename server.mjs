@@ -10,19 +10,6 @@ import indexRouter from "./routes/index.mjs"
 //import connection from "./db.mjs"
 //import bcrypt from 'bcrypt'
 
-import mariadb from "mariadb"
-let pool = mariadb.createPool({
-  host: "localhost",
-  //port : 3000,
-  user: "alizee",
-  password: process.env.password_Maria,
-  database: "lokkeroom",
-  connectionLimit: 5,
-})
-
-export const dbConfig = Object.freeze({
-  pool: pool,
-})
 
 app.set("view engine", "ejs")
 app.set(
@@ -40,7 +27,7 @@ app.use("/api", indexRouter)
 //app.use(express.urlencoded({extended : false})) // a mettre dans le login.mjs!!! permet d'utiliser les datas entrées dans le form dans les requetes inside of our request variables inside our post method
 
 app.listen(process.env.PORT || 3000)
-export default pool
+
 
 // npm init -y
 // npm i express ejs express-ejs-layouts  ==> json/main : server.mjs

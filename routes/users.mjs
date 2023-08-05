@@ -1,26 +1,38 @@
-import express from "express"
+import express, { json } from "express"
 const router = express()
 import pool from "../db.mjs"
+router.use(json())
 
-//router.get("/users", async (req, res) => {
-//  try {
-//    const result = await pool.query("select * from users")
+// Crée un nouvel user //ok
 
-//    const usernames = result.map((row) => row.username)
-//    res.json({ usernames })
-//  } catch (err) {
-//    console.error("Error fetching users:", err)
-//    res.status(500).json({ error: "Internal Server Error" })
-//  }
-//})
+router.post("/", async (req, res) => {
+  const { name, email, password, role } = req.body
 
-
-router.get("/users/:userId", async (req, res) => {
-  const user = req.params.user
   try {
     const result = await pool.query(
-     //code ici : A single user. If the user is not an admin, can only get details from people that are in the same lobby.
+      `INSERT INTO users (name, email, password, role) VALUES ('${name}', '${email}', '${password}', '${role}') RETURNING *`
     )
+
+    if (result.rows && result.rows.length > 0) {
+      res.status(201).json(result.rows[0])
+    } else {
+      res.status(500).json({ error: "Échec de la création de l'utilisateur" })
+    }
+  } catch (err) {
+    if (err.code === "ER_DUP_ENTRY") {
+      res.status(409).json({ error: "Nom d'utilisateur déjà pris" })
+    } else {
+      console.error("Erreur lors de la création de l'utilisateur", err)
+      res.status(500).json({ error: "Erreur Interne du Serveur" })
+    }
+  }
+})
+
+// ok
+router.get("/", async (req, res) => {
+  const name = req.params.name
+  try {
+    const result = await pool.query("SELECT * FROM users")
     res.json(result)
     console.log(result)
   } catch (err) {
@@ -28,4 +40,5 @@ router.get("/users/:userId", async (req, res) => {
     res.status(500).json({ error: "Internal Server Error" })
   }
 })
+
 export default router
