@@ -7,10 +7,6 @@ import expressLayouts from "express-ejs-layouts"
 
 import indexRouter from "./routes/index.mjs"
 
-//import connection from "./db.mjs"
-//import bcrypt from 'bcrypt'
-
-
 app.set("view engine", "ejs")
 app.set(
   "views",
@@ -20,11 +16,8 @@ app.set("layout", "layouts/layout")
 app.use(expressLayouts)
 app.use(express.static("public"))
 
-//app.use(express.json())
+
 app.use("/api", indexRouter)
-
-
-//app.use(express.urlencoded({extended : false})) // a mettre dans le login.mjs!!! permet d'utiliser les datas entrées dans le form dans les requetes inside of our request variables inside our post method
 
 app.listen(process.env.PORT || 3000)
 

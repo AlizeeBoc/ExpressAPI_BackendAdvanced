@@ -6,7 +6,10 @@ import bodyParser from "body-parser"
 //import { use } from "passport"
 router.use(bodyParser.json())
 
-// creer un lobby // ok
+// ok
+// @desc      Create a new lobby
+// @route     POST /api/lobby/newLobby
+// @acces   
 router.post("/newLobby", async (req, res) => {
   const { title} = req.body
 
@@ -30,7 +33,10 @@ router.post("/newLobby", async (req, res) => {
   }
 })
 
-// 5. POST un message dans un lobby // ok
+// 5. ok
+// @desc      Create a message in a lobby
+// @route     POST /api/lobby/:lobbyId
+// @acces   
 router.post("/:lobbyId", async (req, res) => {
   const { user_id, content, timeStamp } = req.body
   const lobbyId = req.params.lobbyId
@@ -57,7 +63,10 @@ router.post("/:lobbyId", async (req, res) => {
   }
 })
 
-// 5. get tous les users d'un meme lobby // ok
+// 5. ok
+// @desc      Display all the users from a lobby
+// @route     GET /api/lobby/:lobbyId/users
+// @acces   
 router.get("/:lobbyId/users", async (req, res) => {
   const lobbyId = req.params.lobbyId
   try {
@@ -73,7 +82,10 @@ router.get("/:lobbyId/users", async (req, res) => {
   }
 })
 
-// 3. get les messages d'un lobbyId  // ok
+// 3. ok
+// @desc      Display all the messages from a lobby
+// @route     GET /api/lobby/:lobbyId
+// @acces   
 router.get("/:lobbyId", async (req, res) => {
   const lobbyId = req.params.lobbyId
   try {
@@ -88,7 +100,10 @@ router.get("/:lobbyId", async (req, res) => {
   }
 })
 
-//4. GET a single message du lobby // ok
+//4. ok
+// @desc      Display a specific message from a specific lobby
+// @route     GET /api/lobby/:lobbyId/:messageId
+// @acces   
 router.get("/:lobbyId/:messageId", async (req, res) => {
   const lobbyId = req.params.lobbyId
   const messageId = req.params.messageId
@@ -104,7 +119,10 @@ router.get("/:lobbyId/:messageId", async (req, res) => {
   }
 })
 
-// Crée un nouvel user dans un lobby (en créer un s'il n'existe pas encore) // ok
+// 8. ok
+// @desc      Create a new user in a specific lobby (create a new lobby if it doesn't already exist)
+// @route     POST /api/lobby/:lobbyId/add-user
+// @acces   
 
 router.post("/:lobbyId/add-user", async (req, res) => {
   const lobbyId = req.params.lobbyId;
@@ -153,13 +171,19 @@ router.post("/:lobbyId/add-user", async (req, res) => {
 });
 
 
-// remove user from a lobby // non ok. Le code ne crash pas, response = utilisateur supprimé avec succes mais ... rien ne change dans ma database
+// 9. remove user from a lobby // ok
+// => 1. check si le lobby avec l'ID spécifié existe
+// => 2. si l'utilisateur avec l'ID spécifié existe
+// => 3. supprimer la relation dans la table "lobbies_has_users"
+
+// @desc      Remove a specific user from a specific lobby
+// @route     POST /api/lobby/:lobbyId/remove-user/:userId
+// @acces   
 router.post("/:lobbyId/remove-user/:userId", async (req, res) => {
   const lobbyId = req.params.lobbyId;
   const userId = req.params.userId;
 
-  try {
-    // Vérifier si le lobby avec l'ID spécifié existe
+  try { 
     const lobbyCheckQuery = "SELECT * FROM lobby WHERE id = ?";
     const lobbyCheckResult = await pool.query(lobbyCheckQuery, [lobbyId]);
 
@@ -167,7 +191,6 @@ router.post("/:lobbyId/remove-user/:userId", async (req, res) => {
       return res.status(404).json({ message: "Le lobby spécifié n'existe pas." });
     }
 
-    // Vérifier si l'utilisateur avec l'ID spécifié existe
     const userCheckQuery = "SELECT * FROM users WHERE id = ?";
     const userCheckResult = await pool.query(userCheckQuery, [userId]);
 
@@ -175,7 +198,6 @@ router.post("/:lobbyId/remove-user/:userId", async (req, res) => {
       return res.status(404).json({ message: "L'utilisateur spécifié n'existe pas." });
     }
 
-    // Supprimer la relation dans la table "lobbies_has_users"
     const removeUserFromLobbyQuery =
       "DELETE FROM lobbies_has_users WHERE users_id = ? AND lobby_id = ?";
     await pool.query(removeUserFromLobbyQuery, [userId, lobbyId]);
@@ -188,7 +210,5 @@ router.post("/:lobbyId/remove-user/:userId", async (req, res) => {
     });
   }
 });
-
-
 
 export default router

@@ -4,6 +4,9 @@ import pool from "../db.mjs"
 router.use(json())
 
 // 7. GET 1 seul user // ok
+// @desc      Display the name of a specific user
+// @route     GET /api/users/:userId
+// @acces   
 router.get('/:userId', async (req, res) => {
   const userId = req.params.userId
   try {
@@ -20,6 +23,9 @@ router.get('/:userId', async (req, res) => {
 
 
 // ok
+// @desc      Display all the users
+// @route     GET /api/users/
+// @acces   
 router.get("/", async (req, res) => {
   const name = req.params.name
   try {
