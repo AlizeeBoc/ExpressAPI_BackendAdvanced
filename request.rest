@@ -2,7 +2,7 @@ POST http://localhost:3000/api/lobby/newLobby
 Content-Type: application/json  
 
 {
-  "title" : "Raptors"
+  "title" : "test2"
 }
 
 ###
@@ -49,8 +49,8 @@ POST http://localhost:3000/api/register
 Content-Type: application/json
 
 {
-  "name" : "Sara Vanhulst",
-  "email" :"svanhulst@gmail.com",
+  "name" : "nametest",
+  "email" :"test@gmail.com",
   "password" : "abracadabra"
 }
 

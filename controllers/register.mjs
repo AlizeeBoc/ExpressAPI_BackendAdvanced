@@ -1,11 +1,5 @@
-import express from "express"
-const router = express.Router()
 import pool from "../db.mjs"
-//import bodyParser from "boddy-parser"
 import bcrypt from "bcrypt"
-
-//router.use(json())
-//router.use(bodyParser.json())
 
 
 // @desc      register a new user

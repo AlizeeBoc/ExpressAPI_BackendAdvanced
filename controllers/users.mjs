@@ -1,11 +1,4 @@
-import express, { json } from "express"
-const router = express.Router()
 import pool from "../db.mjs"
-import bodyParser from "body-parser"
-
-router.use(json())
-router.use(bodyParser.json())
-
 
 
 // @desc      Display the name of a specific user
