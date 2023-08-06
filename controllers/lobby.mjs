@@ -1,9 +1,9 @@
 import express, { json } from "express"
 const router = express.Router()
 import pool from "../db.mjs"
-router.use(json())
 import bodyParser from "body-parser"
-//import { use } from "passport"
+
+router.use(json())
 router.use(bodyParser.json())
 
 

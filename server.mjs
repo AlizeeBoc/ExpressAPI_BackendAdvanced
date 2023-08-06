@@ -3,9 +3,10 @@ dotenv.config()
 
 import express from "express"
 const app = express()
-import expressLayouts from "express-ejs-layouts"
 
+import expressLayouts from "express-ejs-layouts"
 import indexRouter from "./routes/index.mjs"
+//import { errorHandler } from "./middleware/error.mjs"
 
 app.set("view engine", "ejs")
 app.set(
@@ -16,11 +17,12 @@ app.set("layout", "layouts/layout")
 app.use(expressLayouts)
 app.use(express.static("public"))
 
-
 app.use("/api", indexRouter)
+//app.use(errorHandler)
 
 app.listen(process.env.PORT || 3000)
 
+////////////////////////////////////////////////////////////////////////////////////////
 
 // npm init -y
 // npm i express ejs express-ejs-layouts  ==> json/main : server.mjs
