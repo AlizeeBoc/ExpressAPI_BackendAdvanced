@@ -3,10 +3,9 @@ const router = express.Router()
 import pool from "../db.mjs"
 router.use(json())
 import bodyParser from "body-parser"
+import { Lobby } from "../models/Lobby.mjs"
 //import { use } from "passport"
 router.use(bodyParser.json())
-
-
 
 // @desc      Create a new lobby
 // @route     POST /api/lobby/newLobby
@@ -18,11 +17,12 @@ export const createNewLobby = async (req, res, next) => {
     return res.status(400).json({ message: "Tous les champs sont requis." })
   }
 
-  const sqlQuery = "INSERT INTO lobby (title) VALUES (?)"
-  const values = [title]
+  //const sqlQuery = "INSERT INTO lobby (title) VALUES (?)"
+  //const values = [title]
 
   try {
-    await pool.query(sqlQuery, values)
+    //await pool.query(sqlQuery, values)
+    await Lobby.create(title)
     return res
       .status(201)
       .json({ message: "Le lobby a été créé avec succès !" })
