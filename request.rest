@@ -45,29 +45,28 @@ Content-Type: application/json
 
 
 
+
 ### REGISTER
 POST http://localhost:3000/api/register
 Content-Type: application/json
 
 {
-  "name" : "nametest",
-  "email" :"test@gmail.com",
-  "password" : "abracadabra"
+  "name" : "TestiToday",
+  "email" :"testoooday@gmail.com",
+  "password" : "abraaacadabra"
 }
 
 
 
-
-
-###
+### GET all users
 GET http://localhost:3000/api/users
 Content-Type: application/json
 
-###
-GET http://localhost:3000/api/users/66
+### GET users of a specific lobby
+GET http://localhost:3000/api/users/6
 Content-Type: application/json
 
-###
+### CREATE a new user
 POST http://localhost:3000/api/users
 Content-Type: application/json
 
