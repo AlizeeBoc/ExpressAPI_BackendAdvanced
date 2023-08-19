@@ -11,12 +11,15 @@ import indexRouter from "./routes/index.mjs"
 app.set("view engine", "ejs")
 app.set(
   "views",
-  "/home/alizee/becode_exo/hill/backendNodeJs/expressAdvanced" + "/views"
+  "/home/alizee/becode_exo/hill/expressAdvanced" + "/views"
 )
 app.set("layout", "layouts/layout")
 app.use(expressLayouts)
 app.use(express.static("public"))
 
+app.get("/", (req, res) => {
+  res.render("index");
+});
 app.use("/api", indexRouter)
 //app.use(errorHandler)
 

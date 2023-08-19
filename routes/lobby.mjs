@@ -7,9 +7,7 @@ router.use(bodyParser.json())
 import pool from "../db.mjs"
 
 
-// @desc      Create a new lobby
-// @route     POST /api/lobby/newLobby
-// @acces
+// CREATE new lobby
 router.post("/newLobby", async (req, res, next) => {
   const { title } = req.body
 
@@ -76,9 +74,8 @@ router.post("/:lobbyId", async (req, res, next) => {
   next()
 })
 
-// @desc      Display all the users from a lobby
-// @route     GET /api/lobby/:lobbyId/users
-// @acces
+// EJS ok
+// GET all the users from a lobby
 router.get("/:lobbyId/users", async (req, res, next) => {
   const lobbyId = req.params.lobbyId
   try {
@@ -86,7 +83,7 @@ router.get("/:lobbyId/users", async (req, res, next) => {
       `SELECT users.name FROM users left join lobbies_has_users on users.id = lobbies_has_users.users_id 
         where lobbies_has_users.lobby_id = ${lobbyId}`
     )
-    res.json(result)
+    res.render("users", {result})
     console.log(result)
   } catch (err) {
     console.error("Error fetching usernames", err)
@@ -94,9 +91,8 @@ router.get("/:lobbyId/users", async (req, res, next) => {
   }
 })
 
-// @desc      Display all the messages from a lobby
-// @route     GET /api/lobby/:lobbyId
-// @acces
+// GET all the messages from a lobby
+
 router.get("/:lobbyId", async (req, res, next) => {
   const lobbyId = req.params.lobbyId
   try {
@@ -111,9 +107,8 @@ router.get("/:lobbyId", async (req, res, next) => {
   }
 })
 
-// @desc      Display a specific message from a specific lobby
-// @route     GET /api/lobby/:lobbyId/:messageId
-// @acces
+// GET a specific message from a specific lobby
+
 router.get('/:lobbyId/:messageId', async (req, res, next) => {
   const lobbyId = req.params.lobbyId
   const messageId = req.params.messageId
@@ -129,10 +124,7 @@ router.get('/:lobbyId/:messageId', async (req, res, next) => {
   }
 })
 
-// @desc      Create a new user in a specific lobby (create a new lobby if it doesn't already exist)
-// @route     POST /api/lobby/:lobbyId/add-user
-// @acces
-
+// Create a new user in a specific lobby (create a new lobby if it doesn't already exist)
 router.post('/:lobbyId/add-user', async (req, res, next) => {
   const lobbyId = req.params.lobbyId
   const { name, email, password, role } = req.body
@@ -142,27 +134,27 @@ router.post('/:lobbyId/add-user', async (req, res, next) => {
   }
 
   try {
-    // Vérifier si le lobby avec l'ID spécifié existe
+    // Ce lobby existe-t-il?
     const lobbyCheckQuery = "SELECT * FROM lobby WHERE id = ?"
     const lobbyCheckResult = await pool.query(lobbyCheckQuery, [lobbyId])
 
     if (lobbyCheckResult.length === 0) {
-      // Si le lobby n'existe pas, le créer d'abord
+      // Si pas, on le créé
       const createLobbyQuery = "INSERT INTO lobby (id, title) VALUES (?, ?)"
       const createLobbyValues = [lobbyId, `Lobby ${lobbyId}`]
       await pool.query(createLobbyQuery, createLobbyValues)
     }
 
-    // Insérer le nouvel utilisateur dans la table "users"
+    // Insérer le nouvel user dans "users"
     const userQuery =
       "INSERT INTO users (name, email, password, role) VALUES (?, ?, ?, ?)"
     const userValues = [name, email, password, role]
     const userResult = await pool.query(userQuery, userValues)
 
-    // Récupérer l'ID de l'utilisateur nouvellement inséré
+    // Récupérer son ID 
     const userId = userResult.insertId
 
-    // Insérer la relation dans la table "lobbies_has_users"
+    // insérer la relation dans "lobbies_has_users"
     const lobbiesHasUsersQuery =
       "INSERT INTO lobbies_has_users (users_id, lobby_id) VALUES (?, ?)"
     const lobbiesHasUsersValues = [userId, lobbyId]
@@ -179,9 +171,7 @@ router.post('/:lobbyId/add-user', async (req, res, next) => {
   }
 })
 
-// @desc      Remove a specific user from a specific lobby
-// @route     POST /api/lobby/:lobbyId/remove-user/:userId
-// @acces
+// Remove a specific user from a specific lobby
 router.post("/:lobbyId/remove-user/:userId", async (req, res, next) => {
   const lobbyId = req.params.lobbyId
   const userId = req.params.userId
