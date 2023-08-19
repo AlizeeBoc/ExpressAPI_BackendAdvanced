@@ -5,16 +5,15 @@ import bodyParser from "body-parser"//ok
 router.use(bodyParser.json())//ok
 import pool from "../db.mjs"
 import bcrypt from "bcrypt"
+
 router.use(express.urlencoded({ extended: true })); // !!!!
-
-
 
 //GET formulaire pour Register
 router.get("/", (req, res) => {
     res.render("register");
   });
 
-//
+// POST Register
 router.post("/", async (req, res) => {
     const { name, email, password } = req.body
 

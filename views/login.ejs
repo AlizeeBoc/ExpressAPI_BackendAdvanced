@@ -1,7 +1,7 @@
 <h1>Login</h1>
-<% if (messages.error) {
-    messages.error}
-%>
+<% if (messages.error) {  %>    <!--flass.passport-->
+   <%= messages.error %>
+<% } %>
 <form action="/api/login" method = "POST">
     <div>
         <label for="email">Email</label>

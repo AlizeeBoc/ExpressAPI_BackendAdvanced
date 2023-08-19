@@ -1,27 +1,31 @@
+// YOU ARE LOST SOMEWHERE HERE //  => comment y intégrer les query via ma db?
+
 import dotenv from "dotenv"
 if (process.env.NODE_ENV !== 'production') {
     dotenv.config()
 }
-
 import express, { application } from 'express'
 const router = express.Router()
+import bodyParser from "body-parser"//ok
+router.use(bodyParser.json())//ok
 import bcrypt from 'bcrypt'
 import passport from 'passport'
 import flash from 'express-flash'
-import initialize from '../passport-config.mjs'
+import initializePassport from "../passport-config.mjs"
 import session from 'express-session'
 //import pool from "../db.mjs"
 
 
-import initializePassport from "../passport-config.mjs"
+
 initializePassport(
     passport, 
-    email => users.find(user => user.email === email)
+    email => users.find(user => user.email === email),
+    id => users.find(user => user.id === id)
 )
 
 const users = []
 
-router.use(express.urlencoded({extended : false})) // !!! ici, pas dans le server.mjs!!! permet d'utiliser les our request variables inside our post method
+router.use(express.urlencoded({extended : false})) // !!! ici, pas dans le server.mjs!!! permet d'utiliser les variables entrées dans les champs pour la post method
 router.use(flash())
 router.use(session({ 
     secret : process.env.SESSION_SECRET,
@@ -36,7 +40,7 @@ router.use(passport.session())
 
 
 
-//1.
+//1.ok
 router.get('/', (req, res) => {
     res.render('login.ejs')
 })
@@ -44,7 +48,7 @@ router.get('/', (req, res) => {
 //4.
 router.post('/', passport.authenticate('local', {
     succesRedirect : '/', 
-    failureRedirect : '/login',
+    failureRedirect : '/api/login',
     failureFlash : true,
 }))
 
